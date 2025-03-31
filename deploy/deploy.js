@@ -9,6 +9,7 @@ async function main() {
     // Deploy Organizers contract
     const Organiser = await hre.ethers.getContractFactory("Organizers");
     const organiser = await Organiser.deploy(); // Await deployment here
+    // await organiser.deployed();
 
     console.log("Organiser deployed at:", organiser.target); // Use `target` instead of `address`
 }

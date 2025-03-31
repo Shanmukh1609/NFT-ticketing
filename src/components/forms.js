@@ -18,7 +18,6 @@ const OrganizerForm = () => {
             alert("MetaMask not found. Please install MetaMask.");
             return;
         }
-
         console.log("Connecting ...");
 
         try {
@@ -42,15 +41,31 @@ const OrganizerForm = () => {
 
             setOrganiser(dappazon);
 
-            const transaction = await dappazon.register(organiserName);
+            console.log("Contract Address:", config[network.chainId].organiser.address);
+            const transaction = await dappazon.register(organiserName, { value: ethers.parseEther("0") });
             await transaction.wait();
-
-            console.log(await dappazon.members(Account));
-        } catch (error) {
+            
+            console.log("Organiser registered successfully");
+            
+         }  catch (error) {
             console.error("Error registering:", error);
         }
     };
 
+    const checkDetails = async () => {
+        if (!organiser) {
+            console.error("Contract instance is not initialized.");
+            return;
+        }
+        
+        try {
+            console.log("Checking organiser details...");
+            const isRegistered = await organiser.isOrganiser(organiserAddress);
+            console.log("Registration status:", isRegistered);
+        } catch (error) {
+            console.error("Error fetching details:", error);
+        }
+    };
     return (
         <div>
             <form onSubmit={register}>
@@ -78,6 +93,8 @@ const OrganizerForm = () => {
                 />
                 <button type="submit">Submit</button>
             </form>
+
+            <button onClick={checkDetails}>Check Details</button>
         </div>
     );
 };
