@@ -32,6 +32,8 @@ describe("NFTminting", ()=>{
                     console.log("Address:", result);
                     expect(result.orgAddress).to.equal(array[i].address)
                 }
+
+                console.log("deployer",deployer)
             })   
     })
 

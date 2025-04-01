@@ -1,0 +1,94 @@
+body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #1e2a5a, #8a77d6);
+    color: black;
+    margin: 0;
+    padding: 0;
+  }
+
+.new-arrival-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+      font-weight:bold;
+    font-family: sans-serif;
+}
+
+.new-arrival-header {
+    margin-top:20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    margin-bottom: 30px;
+    margin-left:10px;
+}
+
+.new-arrival-header h1 {
+    font-size: 2.5em;
+    margin: 0;
+}
+
+.previous-button {
+    background-color: rgba(255, 255, 255, 0.2);
+      font-weight:bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.new-arrival-form {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 30px;
+    border-radius: 15px;
+    width: 30%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+input{
+    color:black;
+    font-size: 15px;
+}
+.input-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: transparent;
+      font-weight:bold;
+}
+
+.input-group::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 100%;
+    height: 1px;
+    background-color: white;
+}
+
+.add-button {
+    background-color: #4CAF50;
+      font-weight:bold;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 50%;
+    margin-left: 7.5rem;
+   
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

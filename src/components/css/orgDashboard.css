@@ -1,0 +1,9 @@
+/* General styling */
+body {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #1e2a5a, #8a77d6);
+    color: black;
+    margin: 0;
+    padding: 0;
+  }
+  

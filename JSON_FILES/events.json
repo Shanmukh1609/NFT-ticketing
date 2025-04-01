@@ -1,0 +1,39 @@
+[
+    
+        {
+            "eventName": "IEEE Distributed Systems",
+            "uri":"ipfs",
+            "eventDescription": "IEEE Distributed Systems is a group of students who are interested in learning about distributed systems and how they work. We meet every week to discuss new topics and work on projects together.",
+            "venue": "Hotel Novotel, Hyderabad Convention Centre",
+            "price":5,
+            "totalTickets":50,
+            "priceCap":20
+        },
+        {
+            "eventName": "IEEE Distributed Systems",
+            "uri":"ipfs",
+            "eventDescription": "IEEE Distributed Systems is a group of students who are interested in learning about distributed systems and how they work. We meet every week to discuss new topics and work on projects together.",
+            "venue": "Hotel Novotel, Hyderabad Convention Centre",
+            "price":5,
+            "totalTickets":50,
+            "priceCap":20
+        },
+        {
+            "eventName": "IEEE Distributed Systems",
+            "uri":"ipfs",
+            "eventDescription": "IEEE Distributed Systems is a group of students who are interested in learning about distributed systems and how they work. We meet every week to discuss new topics and work on projects together.",
+            "venue": "Hotel Novotel, Hyderabad Convention Centre",
+            "price":5,
+            "totalTickets":50,
+            "priceCap":20
+        },
+        {
+            "eventName": "IEEE Distributed Systems",
+            "uri":"ipfs ",
+            "eventDescription": "IEEE Distributed Systems is a group of students who are interested in learning about distributed systems and how they work. We meet every week to discuss new topics and work on projects together.",
+            "venue": "Hotel Novotel, Hyderabad Convention Centre",
+            "price":5,
+            "totalTickets":50,
+            "priceCap":20
+        }
+    ]

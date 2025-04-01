@@ -54,7 +54,7 @@ contract NFTminting is  ERC721URIStorage{
    mapping(uint256 => ticket) private tickets;
    mapping(address => buyer) private buyers;
 
-    uint256 public eventId = 0;
+    uint256 private eventId = 0;
     uint256 public ticketId = 0;
 
     constructor() ERC721("NFT_MINTING", "NFTM") {
@@ -64,8 +64,8 @@ contract NFTminting is  ERC721URIStorage{
     event newEventCreated(uint256 eventId, string eventName, string eventDescription, string venue, uint256 ticketPrice, uint256 totalTickets, uint256 resalePrice);
     event newTicketCreated(uint256 ticketId, uint256 eventId, uint256 seatNum, uint256 Price);
   
-   modifier isOrganiser(){
-     require(organisers[msg.sender].orgAddress == msg.sender, "You are not an organiser");
+   modifier isOrganiser(address addr){
+     require(organisers[addr].orgAddress == addr, "You are not an organiser");
      _;
    }
 
@@ -74,30 +74,30 @@ contract NFTminting is  ERC721URIStorage{
         _;
    }
 
-   function newOrganiser() public  {
-       require(organisers[msg.sender].orgAddress != msg.sender, "Already an Organiser");
+   function newOrganiser(address addr) public  {
+       require(organisers[addr].orgAddress != addr, "Already an Organiser");
         
        organiser memory neworg;
-       neworg.orgAddress = msg.sender;
-       organisers[msg.sender] = neworg;
+       neworg.orgAddress = addr;
+       organisers[addr] = neworg;
    }
 
-   function updateOrgDetails(string memory _logo, string memory _orgName) public isOrganiser{
-       organisers[msg.sender].logo = _logo;
-       organisers[msg.sender].orgName = _orgName;
+   function updateOrgDetails(address addr,string memory _logo, string memory _orgName) public isOrganiser(addr){
+       organisers[addr].logo = _logo;
+       organisers[addr].orgName = _orgName;
    }
 
-   function getOrgDetails() public view isOrganiser returns(organiser memory){
-       return organisers[msg.sender];
+   function getOrgDetails(address addr) public view isOrganiser(addr) returns(organiser memory){
+       return organisers[addr];
    }
 
 
-   function newEvent(string memory _eventName, string memory uri,string memory _eventDescription, string memory _venue, uint256 _ticketPrice, uint256 _totalTickets, uint256 _resalePrice) public isOrganiser{
+   function newEvent(address addr ,string memory _eventName, string memory uri,string memory _eventDescription, string memory _venue, uint256 _ticketPrice, uint256 _totalTickets, uint256 _resalePrice) public  isOrganiser(addr){
        eventId++;
        Event memory newevent;
 
       
-       newevent.orgAddress = msg.sender;
+       newevent.orgAddress = addr;
        newevent.eventId = eventId; 
        newevent.eventName = _eventName;
        newevent.eventDescription = _eventDescription; 
@@ -109,7 +109,7 @@ contract NFTminting is  ERC721URIStorage{
        newevent.ticketsSold = 0;
 
        events[eventId] = newevent;
-       organisers[msg.sender].eventIds.push(eventId);
+       organisers[addr].eventIds.push(eventId);
 
 
     emit newEventCreated(eventId, _eventName, _eventDescription, _venue, _ticketPrice, _totalTickets, _resalePrice);
@@ -120,17 +120,23 @@ function getevent(uint256 _eventId)  public view  returns (Event memory) {
     return events[_eventId];
 }
 
+  function getEventCount() public view returns(uint256){
+    return eventId;
+}
 
-    function mintNFT(uint256 _ticketId,uint256  _eventId) public {
+
+    function mintNFT(uint256 _ticketId,uint256  _eventId, address to) public {
         // require(events[_eventId].totalTickets > events[_eventId].ticketsSold, "Tickets are sold out");
-        _mint(msg.sender, ticketId);
+        _mint(to, ticketId);
         _setTokenURI(_ticketId, events[_eventId].uri);
     }
 
-    function createNFTticket(uint256 _eventId, uint256 _seatNum,uint256 _price) public isOrganiser  isEvent(_eventId){
+    function createNFTticket(address addr, uint256 _eventId, uint256 _seatNum,uint256 _price) public isOrganiser(addr)payable  isEvent(_eventId){
     
         require(events[_eventId].totalTickets >= events[_eventId].ticketsSold, "Tickets are sold out");
         require(events[_eventId].ticketPrice <= _price, "Price is too low");
+         
+         payable(events[_eventId].orgAddress).transfer(events[_eventId].ticketPrice );
 
 
         ticketId++;
@@ -146,7 +152,7 @@ function getevent(uint256 _eventId)  public view  returns (Event memory) {
 
        
         events[_eventId].ticketsSold++;
-         mintNFT(ticketId, _eventId);
+         mintNFT(ticketId, _eventId,addr);
 
         emit newTicketCreated(ticketId, _eventId, _seatNum, events[_eventId].ticketPrice);
     }
