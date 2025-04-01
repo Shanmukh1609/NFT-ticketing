@@ -127,34 +127,43 @@ function getevent(uint256 _eventId)  public view  returns (Event memory) {
 
     function mintNFT(uint256 _ticketId,uint256  _eventId, address to) public {
         // require(events[_eventId].totalTickets > events[_eventId].ticketsSold, "Tickets are sold out");
-        _mint(to, ticketId);
+        _mint(to, _ticketId);
         _setTokenURI(_ticketId, events[_eventId].uri);
     }
 
-    function createNFTticket(address addr, uint256 _eventId, uint256 _seatNum,uint256 _price) public isOrganiser(addr)payable  isEvent(_eventId){
+    function createNFTticket(address addr, uint256 _eventId) public payable  isEvent(_eventId){
     
         require(events[_eventId].totalTickets >= events[_eventId].ticketsSold, "Tickets are sold out");
-        require(events[_eventId].ticketPrice <= _price, "Price is too low");
+        require(events[_eventId].ticketPrice <= msg.value, "Price is too low");
          
-         payable(events[_eventId].orgAddress).transfer(events[_eventId].ticketPrice );
-
+ (bool success, ) = payable(events[_eventId].orgAddress).call{value: events[_eventId].ticketPrice}("");
+require(success, "Transfer failed");
 
         ticketId++;
         ticket memory newTicket;
         newTicket.ticketId = ticketId;
         newTicket.eventId = _eventId;
-        newTicket.seatNum = _seatNum;
+        
         newTicket.Price = events[_eventId].ticketPrice;
         newTicket.isAvailablebid = false;
+
+       uint256 num= events[_eventId].ticketIds.length;
+       newTicket.seatNum = num+1;
 
         tickets[ticketId] = newTicket;
         events[_eventId].ticketIds.push(ticketId);
 
        
         events[_eventId].ticketsSold++;
-         mintNFT(ticketId, _eventId,addr);
+        
+        mintNFT(ticketId, _eventId,addr);
 
-        emit newTicketCreated(ticketId, _eventId, _seatNum, events[_eventId].ticketPrice);
+      buyer memory customer;
+      customer.buyerAddress=addr;
+      buyers[addr]=customer;
+      buyers[addr].ticketIds.push(ticketId);
+
+        emit newTicketCreated(ticketId, _eventId, num, events[_eventId].ticketPrice);
     }
 
     function getTicket(uint256 _ticketId) public view returns(ticket memory){
@@ -165,6 +174,33 @@ function getevent(uint256 _eventId)  public view  returns (Event memory) {
 
         address from = ownerOf(_ticketId);
         safeTransferFrom(from, _to, _ticketId);
+    }
+
+   function resaleNFT(uint256 id, uint256 _price,address addr) public {
+    // require(id > =0, "Invalid Ticket ID"); // Ensure ID is valid
+    require(tickets[id].ticketId ==id, "Ticket does not exist"); // Prevent uninitialized access
+    require(ownerOf(id) == addr, "You are not the owner"); // Ensure sender owns the ticket
+    require(_price > 0, "Price must be greater than zero"); // Ensure valid price
+
+    tickets[id].Price = _price;
+    tickets[id].isAvailablebid = true;
+}
+
+
+    function isBuyer(address addr) public view returns(bool){
+    if (buyers[addr].ticketIds.length > 0) { 
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+    function getBuyer(address addr)public view returns(buyer memory){
+
+        require(buyers[addr].buyerAddress==addr,"Did not buy any NFTs");
+        return buyers[addr];
+
     }
 
 }

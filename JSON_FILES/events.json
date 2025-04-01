@@ -1,39 +1,42 @@
 [
     
-        {
-            "eventName": "IEEE Distributed Systems",
-            "uri":"ipfs",
-            "eventDescription": "IEEE Distributed Systems is a group of students who are interested in learning about distributed systems and how they work. We meet every week to discuss new topics and work on projects together.",
-            "venue": "Hotel Novotel, Hyderabad Convention Centre",
-            "price":5,
-            "totalTickets":50,
-            "priceCap":20
-        },
-        {
-            "eventName": "IEEE Distributed Systems",
-            "uri":"ipfs",
-            "eventDescription": "IEEE Distributed Systems is a group of students who are interested in learning about distributed systems and how they work. We meet every week to discuss new topics and work on projects together.",
-            "venue": "Hotel Novotel, Hyderabad Convention Centre",
-            "price":5,
-            "totalTickets":50,
-            "priceCap":20
-        },
-        {
-            "eventName": "IEEE Distributed Systems",
-            "uri":"ipfs",
-            "eventDescription": "IEEE Distributed Systems is a group of students who are interested in learning about distributed systems and how they work. We meet every week to discuss new topics and work on projects together.",
-            "venue": "Hotel Novotel, Hyderabad Convention Centre",
-            "price":5,
-            "totalTickets":50,
-            "priceCap":20
-        },
-        {
-            "eventName": "IEEE Distributed Systems",
-            "uri":"ipfs ",
-            "eventDescription": "IEEE Distributed Systems is a group of students who are interested in learning about distributed systems and how they work. We meet every week to discuss new topics and work on projects together.",
-            "venue": "Hotel Novotel, Hyderabad Convention Centre",
-            "price":5,
-            "totalTickets":50,
-            "priceCap":20
-        }
-    ]
+    {
+        "eventName": "Web Summit",
+        "uri": "ipfs",
+        "eventDescription": "Web Summit is the world's premier technology conference, bringing together the brightest minds in tech, business, and startups.",
+        "venue": "Altice Arena, Lisbon, Portugal",
+        "price": 50,
+        "totalTickets": 1000,
+        "priceCap": 500
+      },
+      {
+        "eventName": "Coldplay – Music of the Spheres World Tour",
+        "uri": "ipfs",
+        "eventDescription": "Coldplay's Music of the Spheres Tour brings their vibrant and visually spectacular live performances to fans around the globe.",
+        "venue": "SoFi Stadium, Los Angeles, California, USA",
+        "price": 200,
+        "totalTickets": 70000,
+        "priceCap": 2500
+      },
+
+    {
+        "eventName": "Taylor Swift – Eras Tour",
+        "uri": "ipfs",
+        "eventDescription": "Taylor Swift's Eras Tour is a celebration of her musical journey, spanning multiple albums and showcasing iconic hits.",
+        "venue": "MetLife Stadium, East Rutherford, New Jersey, USA",
+        "price": 250,
+        "totalTickets": 60000,
+        "priceCap": 3000
+      },
+      
+    {
+        "eventName": "ETHGlobal Hackathon",
+        "uri": "ipfs",
+        "eventDescription": "ETHGlobal Hackathons bring together blockchain developers and enthusiasts to build the future of Ethereum-based applications.",
+        "venue": "Singapore Expo, Singapore",
+        "price": 10,
+        "totalTickets": 300,
+        "priceCap": 50
+      }
+      
+]

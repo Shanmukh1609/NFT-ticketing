@@ -69,6 +69,36 @@ const NFTEvents = ({ nft }) => {
     setSelectedEvent(null);
   };
 
+  const verifyUser = async () => {
+    try {
+      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+      const acc = ethers.getAddress(accounts[0]);
+      setAccount(acc);
+  
+      if (!acc&&!nft) {
+        toast.error("Problem in wallet login");
+        return;
+      }
+  
+      try {
+        const value = await nft.getBuyer(acc);
+        if (value) {
+          toast.success("Valid User");
+          navigate('/user', { state: { acc } });
+        } else {
+          toast.error("No NFTs are minted");
+        }
+      } catch (contractError) {
+        console.error("Contract call error:", contractError);
+        toast.error("Error verifying user. Try again later.");
+      }
+    } catch (walletError) {
+      console.error("Wallet error:", walletError);
+      toast.error("Wallet connection failed");
+    }
+  };
+  
+
   return (
     <>
       <h1>Welcome to NFT Ticketing</h1>
@@ -76,7 +106,7 @@ const NFTEvents = ({ nft }) => {
         <header className="header">
           <h1 className="logo">NFTix</h1>
           <div className="buttons">
-            <button className="user-btn">User</button>
+            <button className="user-btn" onClick={verifyUser}>User</button>
             <button className="organiser-btn" onClick={verifyOrganiser}>
               Organiser
             </button>
@@ -109,7 +139,7 @@ const NFTEvents = ({ nft }) => {
       </div>
 
       {/* Show BuyTicket component as a pop-up */}
-      {selectedEvent && <BuyTicket event={selectedEvent} onClose={closePopup} />}
+      {selectedEvent && <BuyTicket event={selectedEvent} onClose={closePopup} nft={nft} />}
 
       <Toaster />
     </>

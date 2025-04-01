@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import OrgDashboard from "./components/orgDashboard";
 import NFTEvents from "./components/events";
-
+import UserDashboard from "./components/users";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // ABIs
@@ -64,6 +64,7 @@ const App = () => {
           <Route path="/" element={<NFTEvents nft={nft} />} />
           <Route path="/organiser" element={<OrgDashboard nft={nft} />} />
           <Route path="/addEvent" element={<AddEvent nft={nft} />} />
+          <Route path="/user" element={<UserDashboard nft={nft} />} />
         </Routes>
       </div>
     </Router>
