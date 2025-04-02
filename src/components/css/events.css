@@ -1,4 +1,6 @@
 /* General styling */
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+
 body {
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(to right, #1e2a5a, #8a77d6);
@@ -16,9 +18,10 @@ body {
   /* Header */
   .header {
     display: flex;
-    justify-content: space-between;
+    /* justify-content:space-evenly; */
     align-items: center;
-    padding: 10px 20px;
+    height:100px;
+    /* padding: 10px 20px; */
   }
 
   .create-event{
@@ -32,24 +35,25 @@ body {
     cursor: pointer;
   }
   
-  .logo {
-    font-size: 24px;
-    font-weight: bold;
-  }
+  
   
   .buttons {
+    margin-left:65%;
     display: flex;
     gap: 10px;
   }
   
   .user-btn,
   .organiser-btn {
-    padding: 8px 16px;
-    border: 2px solid white;
-    background: transparent;
+    padding: 20px;
+    border: 0px solid white;
+    width:120px;
+    float: right;
+   
+    background: black;
     color: white;
     cursor: pointer;
-    border-radius: 20px;
+    border-radius: 30px;
     font-size: 14px;
   }
   
@@ -64,6 +68,10 @@ body {
     text-align: left;
     margin-left: 20px;
     font-size: 18px;
+    color:white;
+    font-size: 30px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight:30px;
   }
   
   /* Event cards container */
@@ -71,7 +79,7 @@ body {
 .events-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* Ensures 4 cards per row */
-  gap: 15px;
+  gap: 20px;
   justify-content: center;
   margin-top: 20px;
 }
@@ -98,8 +106,8 @@ body {
   
   /* Individual event card */
   .event-card {
-     width: 100%; /* Take full column width */
-    max-width: 410px; /* Ensures it fits inside screen */
+     width: 100%; 
+    max-width: 410px; 
     height: 400px;
     background: white;
     border-radius: 12px;
@@ -107,10 +115,32 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 15px;
-    
-
+    padding: 10px;
   }
+ 
+  .logo {
+    font-size: 96px;            /* Figma StyledNftixspan */
+    font-family: Rubik,sans-serif;
+    font-weight: 500;
+    font-style: bold;
+    color: white;
+  }
+  
+  .event-image {
+    width: 100%;
+    height:300px;
+    margin-bottom:20px;
+    border-radius: 10px;
+  }
+
+  /* .buy-btn {
+    background: blue;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+  } */
   
   .event-content {
     width: 100%;
@@ -123,7 +153,7 @@ body {
   
   /* Buy button */
   .buy-btn {
-    width: 100%;
+    width: 50%;
     background: green;
     color: white;
     border: none;

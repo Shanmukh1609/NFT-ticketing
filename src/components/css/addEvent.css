@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+
 body {
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(to right, #1e2a5a, #8a77d6);
@@ -60,7 +62,13 @@ input{
     display: block;
     margin-bottom: 5px;
 }
+.add-eve{
+    font-family:  Rubik,sans-serif;
+    color:white;
+    font-size:large;
+    font-style: bold;
 
+}
 .input-group input {
     width: 100%;
     padding: 10px;

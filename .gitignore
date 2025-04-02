@@ -28,6 +28,9 @@ ignition/deployments/chain-31337
 # production
 /build
 
+# Ignore .env files
+.env
+
 # misc
 .DS_Store
 .env.local

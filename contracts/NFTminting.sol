@@ -62,7 +62,7 @@ contract NFTminting is  ERC721URIStorage{
     }
 
     event newEventCreated(uint256 eventId, string eventName, string eventDescription, string venue, uint256 ticketPrice, uint256 totalTickets, uint256 resalePrice);
-    event newTicketCreated(uint256 ticketId, uint256 eventId, uint256 seatNum, uint256 Price);
+    event newTicketCreated(uint256 ticketId, uint256 eventId, uint256 seatNum, uint256 Price,uint256 ntickets);
   
    modifier isOrganiser(address addr){
      require(organisers[addr].orgAddress == addr, "You are not an organiser");
@@ -123,6 +123,12 @@ function getevent(uint256 _eventId)  public view  returns (Event memory) {
   function getEventCount() public view returns(uint256){
     return eventId;
 }
+event DebugTicketCount(uint256 ticketId);
+
+function getTicketCount() public  returns (uint256) {
+    emit DebugTicketCount(ticketId);  // Debugging log
+    return ticketId;
+}
 
 
     function mintNFT(uint256 _ticketId,uint256  _eventId, address to) public {
@@ -158,33 +164,44 @@ require(success, "Transfer failed");
         
         mintNFT(ticketId, _eventId,addr);
 
-      buyer memory customer;
+        if(buyers[addr].buyerAddress!=addr){
+           buyer memory customer;
       customer.buyerAddress=addr;
       buyers[addr]=customer;
+        }
+
+     
       buyers[addr].ticketIds.push(ticketId);
 
-        emit newTicketCreated(ticketId, _eventId, num, events[_eventId].ticketPrice);
+        emit newTicketCreated(ticketId, _eventId, num, events[_eventId].ticketPrice,buyers[addr].ticketIds.length);
     }
 
     function getTicket(uint256 _ticketId) public view returns(ticket memory){
         return tickets[_ticketId];
     }
 
-    function transferNFT(address _to, uint256 _ticketId) public {
+    function transferNFT(address _to, uint256 _ticketId) public payable{
+         address from = ownerOf(_ticketId);
+        (bool success, ) = payable(from).call{value: tickets[_ticketId].Price}("");
+require(success, "Transfer failed");
 
-        address from = ownerOf(_ticketId);
-        safeTransferFrom(from, _to, _ticketId);
+       
+        _transfer(from, _to, _ticketId);
     }
+event Debug(uint256 id, uint256 storedId, address caller, address owner, uint256 price);
 
-   function resaleNFT(uint256 id, uint256 _price,address addr) public {
-    // require(id > =0, "Invalid Ticket ID"); // Ensure ID is valid
-    require(tickets[id].ticketId ==id, "Ticket does not exist"); // Prevent uninitialized access
-    require(ownerOf(id) == addr, "You are not the owner"); // Ensure sender owns the ticket
-    require(_price > 0, "Price must be greater than zero"); // Ensure valid price
+function resaleNFT(uint256 id, uint256 _price, address addr) public {
+    emit Debug(id, tickets[id].ticketId, addr, ownerOf(id), _price);
+    
+    require(tickets[id].ticketId == id, "Ticket does not exist");
+    require(ownerOf(id) == addr, "You are not the owner");
+    require(_price > 0, "Price must be greater than zero");
 
     tickets[id].Price = _price;
     tickets[id].isAvailablebid = true;
+
 }
+
 
 
     function isBuyer(address addr) public view returns(bool){

@@ -1,71 +1,4 @@
-.event-ticket-container {
-    background: linear-gradient(to right, #202647, #6b4ca0);
-    padding: 30px;
-    border-radius: 15px;
-    width: 450px; /* Increased width */
-    margin: auto;
-    text-align: left;
-    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
-    color: white;
-    font-size: 18px; /* Increased font size */
-  }
-  
-  .event-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: lightgray;
-    padding: 12px;
-    border-radius: 10px;
-    font-weight: bold;
-    color: black;
-    font-size: 20px; /* Increased font size */
-  }
-  
-  .event-name {
-    font-size: 32px; /* Increased font size */
-    font-weight: bold;
-    color: black;
-    margin: 0;
-  }
-  
-  .home-button {
-    background-color: #1a1a1a;
-    color: white;
-    padding: 12px 25px;
-    border-radius: 25px;
-    border: none;
-    font-size: 16px; /* Increased font size */
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  
-  .home-button:hover {
-    background-color: #333;
-  }
-  
-  .organiser-info {
-    margin-top: 25px;
-    font-size: 18px;
-  }
-  
-  .ticket-details {
-    display: flex;
-    flex-direction: column;
-    background: lightgray;
-    padding: 15px;
-    border-radius: 10px;
-    margin-top: 15px;
-    color: black;
-  }
-  
-  .ticket-item {
-    text-align: left;
-    font-weight: bold;
-    margin-bottom: 8px;
-    font-size: 18px;
-  }
+
   
   .buy-button {
     background-color: green;
@@ -136,12 +69,16 @@
   
   .popup-inner {
     background: white;
-    padding: 25px;
+    padding: 20px;
     border-radius: 12px;
-    width: 500px; /* Increased width */
+    top:-50px;
+    width: 2000px; /* Increased width */
+    max-width: 1200px;
+    height: 600px; /* Increased height */
     text-align: center;
     position: relative;
-  }
+}
+
   
   .close-btn {
     background: red;
@@ -152,9 +89,69 @@
     font-size: 20px;
     border-radius: 5px;
     transition: 0.3s;
+    float: right;
   }
   
   .close-btn:hover {
     background: darkred;
   }
+
+.popup-content {
+  display: flex;
+  gap: 20px;
+}
+
+.popup-left, .popup-right {
+  flex: 1;
+}
+.popup-left{
+  max-width:500px;
+}
+.popup-event-image {
+  width: 100%;
+  border-radius: 10px;
+  height: 300px;
+}
+
+.popup-event-title {
+  font-size: 24px;
+  text-align: center;
+}
+
+.popup-event-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  text-align: left;
+  gap:10px;
   
+  /* text-align: left; */
+ 
+}
+/* 
+.pop-right-head{
+  float:left;
+} */
+
+.popup-right h3 {
+  font-size: 18px;
+}
+
+.popup-price {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.resale-ticket {
+  display: flex;
+  justify-content: space-between;
+  background: lightgray;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.resale-buy-btn{
+   padding:20px;
+   width:100px;
+
+}

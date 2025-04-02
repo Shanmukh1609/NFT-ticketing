@@ -18,10 +18,13 @@ const NFTEvents = ({ nft }) => {
       try {
         const count = await nft.getEventCount();
         const eventsArray = [];
+        console.log(count);
+        const size = Number(count);
 
-        for (let i = 0; i < count; i++) {
+        for (let i = 1; i <size+1; i++) {
           const event = await nft.getevent(i);
           eventsArray.push(event);
+          console.log(event.uri);
         }
 
         setEvents(eventsArray);
@@ -101,10 +104,10 @@ const NFTEvents = ({ nft }) => {
 
   return (
     <>
-      <h1>Welcome to NFT Ticketing</h1>
+
       <div className="container">
         <header className="header">
-          <h1 className="logo">NFTix</h1>
+          <h4 className="logo">NFTix</h4>
           <div className="buttons">
             <button className="user-btn" onClick={verifyUser}>User</button>
             <button className="organiser-btn" onClick={verifyOrganiser}>
@@ -116,31 +119,22 @@ const NFTEvents = ({ nft }) => {
         <h2 className="events-title">EVENTS:</h2>
 
         <div className="events-container">
-          {events.map((event, index) => (
-            <div className="event-card" key={index}>
-              <div className="event-content">
-                <h3 className="event-name">Event Name: {event.eventName}</h3>
-                <p className="event-venue">{event.venue}</p>
-                <p className="event-price">
-                  <strong>Price: {event.ticketPrice.toString()}</strong>
-                </p>
-                <p className="event-tickets">
-                  Tickets: {event.totalTickets.toString()}
-                </p>
-                <p className="event-price-cap">
-                  Price Cap: {event.resalePrice.toString()}
-                </p>
-                <p className="event-description">{event.eventDescription}</p>
-              </div>
-              <button className="buy-btn" onClick={() => buyHandle(event)}>BUY</button>
-            </div>
-          ))}
+      {events.map((event, index) => (
+        <div className="event-card" key={index}>
+          <h3 className="event-name">{event.eventName}</h3>
+          <img
+            src={`https://gateway.pinata.cloud/ipfs/${event.uri}`}
+            alt={event.eventName}
+            className="event-image"
+          />
+          <button className="buy-btn" onClick={() => buyHandle(event)}>BUY</button>
         </div>
+      ))}
+      {selectedEvent && <BuyTicket event={selectedEvent} onClose={() => setSelectedEvent(null) } nft={nft} account={account} />}
+    </div>
       </div>
 
-      {/* Show BuyTicket component as a pop-up */}
-      {selectedEvent && <BuyTicket event={selectedEvent} onClose={closePopup} nft={nft} />}
-
+      
       <Toaster />
     </>
   );

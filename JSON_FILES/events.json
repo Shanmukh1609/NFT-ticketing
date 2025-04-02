@@ -2,7 +2,7 @@
     
     {
         "eventName": "Web Summit",
-        "uri": "ipfs",
+        "uri": "bafybeie6qowiehxddnlva2xlf7723axo7mmidx3wpdb4hlna7s5sz2xykm",
         "eventDescription": "Web Summit is the world's premier technology conference, bringing together the brightest minds in tech, business, and startups.",
         "venue": "Altice Arena, Lisbon, Portugal",
         "price": 50,
@@ -11,7 +11,7 @@
       },
       {
         "eventName": "Coldplay – Music of the Spheres World Tour",
-        "uri": "ipfs",
+        "uri": "bafybeif5dumkrymgjeptgoakg5lxsskawbrrwkknimogyt6sijneqjn4gy",
         "eventDescription": "Coldplay's Music of the Spheres Tour brings their vibrant and visually spectacular live performances to fans around the globe.",
         "venue": "SoFi Stadium, Los Angeles, California, USA",
         "price": 200,
@@ -21,7 +21,7 @@
 
     {
         "eventName": "Taylor Swift – Eras Tour",
-        "uri": "ipfs",
+        "uri": "bafkreibpwgytayq4fijqi6hncsvgngx3ytfhjf7g63irm7zfmqmunhjgzu",
         "eventDescription": "Taylor Swift's Eras Tour is a celebration of her musical journey, spanning multiple albums and showcasing iconic hits.",
         "venue": "MetLife Stadium, East Rutherford, New Jersey, USA",
         "price": 250,
@@ -31,7 +31,7 @@
       
     {
         "eventName": "ETHGlobal Hackathon",
-        "uri": "ipfs",
+        "uri": "bafkreig63ovvqwru7i5lcu6j2m7jixo4fzl7bxvnraulwhm6jv67rd6mdy",
         "eventDescription": "ETHGlobal Hackathons bring together blockchain developers and enthusiasts to build the future of Ethereum-based applications.",
         "venue": "Singapore Expo, Singapore",
         "price": 10,

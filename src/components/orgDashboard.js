@@ -4,6 +4,8 @@ import { ethers } from "ethers";
 import NFTminting from "../abis/NFTminting.json"; // Import ABI
 import config from "../config.json"; // Ensure this has the contract address
 import "./css/events.css";
+import "./css/orgDashboard.css"
+import ViewTicket from "./viewTicket";
 
 const OrgDashboard = () => {
   const [events, setEvents] = useState([]);
@@ -12,6 +14,7 @@ const OrgDashboard = () => {
 
   const location = useLocation();
   const { acc } = location.state || {}; // ✅ Extract acc
+  const [selectedEvent, setSelectedEvent] = useState(null); // Track selected event for BuyTicket pop-up
  
   const Navigate = useNavigate();
 
@@ -100,14 +103,24 @@ const OrgDashboard = () => {
   const createTicket= async()=>{
     Navigate('/addEvent',{state:{acc}});
   }
- 
+
+  const viewTickets= (eve)=>{
+     console.log("viewing tickets");
+     setSelectedEvent(eve);
+  }
+
+  const closePopup = () => {
+    setSelectedEvent(null);
+  };
+
   return (
     <>
-      <h2 className="events-title">Organiser Dashboard</h2>
-    
-      <p className="wallet-addr">Wallet Address: {acc}</p>
+      <h2 className="events-title-org"><strong>Organiser Dashboard</strong></h2>
+      <div className="header">
+      <p className="wallet-addr">Wallet Address: <strong>{acc}</strong></p>
       
-      <button className="create-event" onClick={createTicket}>Create Event</button>
+      <button className="create-event-btn" onClick={createTicket}><strong>Create Event</strong></button>
+      </div>
       <div className="events-container">
           {events.map((event, index) => (
             <div className="event-card" key={index}>
@@ -124,10 +137,17 @@ const OrgDashboard = () => {
                 <p className="event-price-cap">Price Cap: {event.resalePrice.toString()}</p>
                 <p className="event-description">{event.eventDescription}</p>
               </div>
-              <button className="buy-btn">VIEW TICKETS</button>
+              <button className="buy-btn" onClick={()=>viewTickets(event)}>VIEW TICKETS</button>
             </div>
           ))}
-        </div>
+        {selectedEvent && (
+  <ViewTicket 
+    event={selectedEvent} 
+    onClose={() => setSelectedEvent(null)} 
+    nft={nft} 
+  />
+)}
+ </div>
     </>
   );
 };

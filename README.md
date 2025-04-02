@@ -1,13 +1,27 @@
-# Sample Hardhat Project
+# NFT Based Event Ticketing System
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+The traditional ticketing system faces issues like fraud, scalping, lack of transparency, and limited control over resale. Fake or forged tickets and inflated prices in secondary markets weaken trust and fairness. An NFT-based ticketing system solves these problems by minting unique, tamper-proof tickets on a blockchain. It ensures authenticity, secure ownership verification, transparent transactions, and controlled resale through smart contracts. Additionally, it reduces environmental impact by eliminating paper tickets, offering a sustainable and efficient solution for events.
 
 Try running some of the following tasks:
 
+Instructions to run the code
+
+Make sure to have latest version of #Node JS 
+
+To install all the suitable packages run
 ```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.js
+npm install  
+```
+Compile the Smart Contracts
+```shell
+npm hardhat compile
+```
+Run the local Hardhat network
+```shell
+npm hardhat node
+```
+
+Deploy the smart contract
+```shell
+npx hardhat run ./deploy/deploy.js --network localhost
 ```

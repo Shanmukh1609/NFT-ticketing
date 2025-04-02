@@ -1,9 +1,37 @@
 /* General styling */
-body {
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(to right, #1e2a5a, #8a77d6);
-    color: black;
-    margin: 0;
-    padding: 0;
-  }
-  
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+
+.wallet-addr{
+  color:white;
+  font-family:"Rubik",sans-serif;
+  font-style:bold;
+  margin-top:20px;
+  margin-left:30px;
+  font-size: 20px;
+
+}
+
+.events-title-org{
+  color:white;
+  font-style: bold;
+  font-style:bold;
+  text-align:center;
+  font-family:'Rubik',sans-serif; 
+  font-size:50px;
+  font-weight: 300;
+
+}
+.create-event-btn{
+  margin-left:900px;
+  padding:10px;
+  border-radius:5px;
+  background-color: black;
+  border:0px solid black;
+  font-size:medium;
+  color:white
+}
+
+.create-event-btn:hover{
+  background-color: white;
+  color:black;
+}
