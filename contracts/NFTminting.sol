@@ -174,20 +174,62 @@ require(success, "Transfer failed");
       buyers[addr].ticketIds.push(ticketId);
 
         emit newTicketCreated(ticketId, _eventId, num, events[_eventId].ticketPrice,buyers[addr].ticketIds.length);
+        emit TransferNFTresale(events[_eventId].orgAddress,addr,ticketId,events[_eventId].ticketPrice);
+
     }
 
     function getTicket(uint256 _ticketId) public view returns(ticket memory){
         return tickets[_ticketId];
     }
 
-    function transferNFT(address _to, uint256 _ticketId) public payable{
-         address from = ownerOf(_ticketId);
-        (bool success, ) = payable(from).call{value: tickets[_ticketId].Price}("");
-require(success, "Transfer failed");
+event TransferNFTresale(address indexed from, address indexed to, uint256 indexed tokenId,uint256 price);
 
-       
-        _transfer(from, _to, _ticketId);
+  function transferNFT(address _to, uint256 _ticketId) public payable {
+    address from = ownerOf(_ticketId);
+    uint256 price = tickets[_ticketId].Price;
+
+    require(msg.value >= price, "Insufficient ETH sent");
+    require(from == msg.sender, "Only the owner can transfer");
+
+    // Pay the seller
+    (bool success, ) = payable(from).call{value: price}("");
+    require(success, "Transfer failed");
+
+    // Transfer NFT ownership
+    _transfer(from, _to, _ticketId);
+
+    if(buyers[_to].buyerAddress!=_to){
+        buyer memory newbuyer;
+        newbuyer.buyerAddress=_to;
+        buyers[_to]=newbuyer;
     }
+    buyers[_to].ticketIds.push(_ticketId);
+    buyers[from].pastEventIds.push(tickets[_ticketId].eventId);
+
+    //Remove id
+
+    for(uint256 i=0;i < buyers[from].ticketIds.length;){
+       if (buyers[from].ticketIds[i] == _ticketId) {
+        buyers[from].ticketIds[i] = buyers[from].ticketIds[buyers[from].ticketIds.length- 1];
+        buyers[from].ticketIds.pop();
+    } else {
+        i++; // Only increment i if no removal occurred
+    }
+
+    }
+
+    emit TransferNFTresale(from,_to,_ticketId,price);
+
+    // Mark ticket as not listed anymore
+    
+}
+
+function approveForResale(address _buyer, uint256 _ticketId) public {
+    // require(ownerOf(_ticketId) == msg.sender, "Only the ticket owner can approve resale");
+    approve(_buyer, _ticketId);
+}
+
+
 event Debug(uint256 id, uint256 storedId, address caller, address owner, uint256 price);
 
 function resaleNFT(uint256 id, uint256 _price, address addr) public {
@@ -201,8 +243,6 @@ function resaleNFT(uint256 id, uint256 _price, address addr) public {
     tickets[id].isAvailablebid = true;
 
 }
-
-
 
     function isBuyer(address addr) public view returns(bool){
     if (buyers[addr].ticketIds.length > 0) { 

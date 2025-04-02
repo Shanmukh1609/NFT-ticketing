@@ -71,6 +71,7 @@ const UserDashboard = () => {
               venue: eve.venue,
               uri: eve.uri,
               tickets: [],
+              priceCap:eve.resalePrice,
             };
           }
           
@@ -125,6 +126,7 @@ const UserDashboard = () => {
               <div className="event-details">
                 <h3>{event.eventName}</h3>
                 <p>{event.venue}</p>
+                <p>{event.priceCap}</p>
                 <button className="resell-btn" onClick={() => openResaleModal(event.eventId)}>
                   Resell Ticket
                 </button>
@@ -139,7 +141,7 @@ const UserDashboard = () => {
       {showModal && selectedEventId && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>Select Ticket for Resale</h2>
+            <h2>Select Ticket for Resale <span>price Cap:{ticketsMap[selectedEventId].priceCap}</span> </h2>
             <select onChange={(e) => setSelectedTicketId(e.target.value)}>
               <option value="">Select Ticket</option>
               {ticketsMap[selectedEventId].tickets.map((ticket) => (

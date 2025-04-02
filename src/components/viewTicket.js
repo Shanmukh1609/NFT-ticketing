@@ -4,6 +4,9 @@ import "./css/viewTicket.css"; // Import CSS for pop-up styling
 
 const ViewTicket = ({ event, onClose, nft }) => {
   const [ticketIds, setTicketIds] = useState([]);
+  const [history, setHistory] = useState({});
+  const [showHistory, setShowHistory] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState(null);
 
   useEffect(() => {
     const loadTicketIds = async () => {
@@ -11,6 +14,8 @@ const ViewTicket = ({ event, onClose, nft }) => {
         if (!event || !nft) return; // Ensure event and contract exist
   
         const ticketsArray = [];
+        const historyData = {};
+
         for (const tid of event.ticketIds) {
           const ticketData = await nft.getTicket(tid);
           const Owner = await nft.ownerOf(tid); // Fetch the owner of the ticket
@@ -25,9 +30,16 @@ const ViewTicket = ({ event, onClose, nft }) => {
           };
           // Add owner information to the ticket object
           ticketsArray.push(ticket);
+
+          const transferEvents = await nft.queryFilter(nft.filters.TransferNFTresale(null, null, tid));
+          console.log(transferEvents.map(event => event.args));
+          const owners = transferEvents.map(event => event.args.from);
+          const prices = transferEvents.map(event => ethers.formatEther(event.args.price)); // Convert from wei to ETH
+
+          historyData[tid] = { owners, prices };
         }
-        console.log(ticketsArray);
-  
+        console.log(historyData);
+        setHistory(historyData);
         setTicketIds(ticketsArray);
       } catch (error) {
         console.error("Error loading tickets:", error);
@@ -38,7 +50,10 @@ const ViewTicket = ({ event, onClose, nft }) => {
   }, [event, nft]);
   
 
-
+  const handleShowHistory = (ticket) => {
+    setSelectedTicket(ticket);
+    setShowHistory(true);
+  };
 
   return (
     <div className="popup">
@@ -59,6 +74,9 @@ const ViewTicket = ({ event, onClose, nft }) => {
                 className={`bid-button ${ticket.isAvailablebid ? "red" : "green"}`}>
                 {ticket.isAvailablebid ? "For Bid" : "No Resale"}
                 </button>
+                <button className="history-button" onClick={() => handleShowHistory(ticket)}>
+                <strong>View Ownership History</strong>  
+                </button>
               </div>
             ))
           ) : (
@@ -66,6 +84,29 @@ const ViewTicket = ({ event, onClose, nft }) => {
           )}
         </div>
       </div>
+       {/* Pop-up for Ownership History */}
+       {showHistory && selectedTicket && (
+        <div className="popup">
+          <div className="popup-inner-owner">
+            <div className="popup-header">
+              <h2>Ownership History</h2>
+              <button className="close-btn" onClick={() => setShowHistory(false)}>X</button>
+            </div>
+            <div className="history-list">
+            {history[selectedTicket.ticketId]?.owners.length > 0 ? (
+          history[selectedTicket.ticketId].owners.map((owner, index) => (
+            <p className="showOwners" key={index}>
+              <strong>Previous Owner:</strong> {owner} <br />
+              <strong>Price Bought:</strong> {history[selectedTicket.ticketId].prices[index]} ETH
+            </p>
+          ))
+        ) : (
+          <p>No previous owners found</p>
+        )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

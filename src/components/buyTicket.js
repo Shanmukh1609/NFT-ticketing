@@ -8,6 +8,10 @@ const BuyTicket = ({ event, onClose, nft }) => {
   const navigate = useNavigate();
   const [account, setAccount] = useState(null);
   const [resaleTickets,setResaleTickets] = useState(null);
+  const [history, setHistory] = useState({});
+  const [showHistory, setShowHistory] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState(null);
+
 
 
   useEffect(()=>{
@@ -20,6 +24,7 @@ const BuyTicket = ({ event, onClose, nft }) => {
     
    
     let tkts = [];
+    const historyData = {};
 
     for (const tid of event.ticketIds){
       const reticket = await nft.getTicket(tid);
@@ -33,9 +38,18 @@ const BuyTicket = ({ event, onClose, nft }) => {
           Owner:owner
         }
         
-        tkts.push(ticket); }
+        tkts.push(ticket); 
+        const transferEvents = await nft.queryFilter(nft.filters.TransferNFTresale(null, null, tid));
+        console.log(transferEvents.map(event => event.args));
+        const owners = transferEvents.map(event => event.args.from);
+        const prices = transferEvents.map(event => ethers.formatEther(event.args.price)); // Convert from wei to ETH
+
+        historyData[tid] = { owners, prices };
+      }
     }
     setResaleTickets(tkts);
+    console.log(historyData);
+        setHistory(historyData);
   }
   catch(error){
     console.log("There is an error", error);
@@ -80,35 +94,54 @@ resaleOfTickets();
     }
   };
   
-  const buyResaleTicket= async(ticket)=>{
-    try{
-    if(!ticket){
-      console.log("Error in ticket");
-      toast.error("error");
+  const buyResaleTicket = async (ticket) => {
+    try {
+        if (!ticket) {
+            console.log("Error in ticket");
+            toast.error("Invalid ticket data!");
+            return;
+        }
+
+        // Get current user (buyer) wallet address
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        const buyer = accounts[0]; // Buyer Address
+        
+        // Get the current owner of the ticket
+        const ticketOwner = await nft.ownerOf(ticket.ticketId);
+        
+        if (buyer.toLowerCase() === ticketOwner.toLowerCase()) {
+            toast.error("You already own this ticket!");
+            return;
+        }
+
+        const ticketPriceInETH = ticket.Price;
+
+        // Ensure the owner has approved this transfer
+        const approvedAddress = await nft.approveForResale(buyer,ticket.ticketId);
+        console.log(approvedAddress);
+        // if (approvedAddress.toLowerCase() !== buyer.toLowerCase()) {
+        //     toast.error("Ticket owner must approve the transfer!");
+        //     return;
+        // }
+
+        // Execute the transfer transaction
+        const tx = await nft.transferNFT(buyer, ticket.ticketId, {
+            value: ticketPriceInETH, // Sends ETH to the contract
+        });
+
+        await tx.wait();
+        toast.success("Ticket successfully purchased!");
+    } catch (error) {
+        console.error("Resale Error:", error);
+        toast.error(`Resale failed: ${error.reason || "Unknown Error"}`);
     }
-    else{
-      
-      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-      const acc = accounts[0]; // Correct way to get the address
-      setAccount(acc);
+};
 
-       const ticketPriceInETH = ethers.parseEther(ticket.Price.toString());
-       const ownedBy = nft.ownerOf(ticket.ticketId);
-       const tx = await nft.transferNFT(acc,ticket.ticketId,{
-        from: ownedBy, // Ensures transaction is from the buyer
-        value: ticketPriceInETH, // Sends ETH from the user’s wallet
-      });
+const handleShowHistory = (ticket) => {
+  setSelectedTicket(ticket);
+  setShowHistory(true);
+};
 
-      await tx.wait();
-      toast.success("Ticket successfully purchased!");
-
-    }}
-    catch(error){
-      console.log(error);
-      toast.error("Error in resale");
-    }
-
-  }
 
   if (!event) return null; // Prevents errors if no event is selected
 
@@ -134,7 +167,6 @@ resaleOfTickets();
 
           </p>
           
-
         </div>
 
         {/* RIGHT COLUMN - Prices */}
@@ -156,12 +188,40 @@ resaleOfTickets();
                 <p>Seat No:<strong>{ticket.seatNum}</strong></p>
                 
                 <button className="resale-buy-btn" onClick={()=>buyResaleTicket(ticket)}>BUY</button>
+                <button className="history-button" onClick={() => handleShowHistory(ticket)}>
+                <strong>History</strong>  
+                </button>
               </div>
             ))}
           </div>
         </div>
       </div>
     </div>
+    
+     {/* Pop-up for Ownership History */}
+     {showHistory && selectedTicket && (
+        <div className="popup">
+          <div className="popup-inner-owner">
+            <div className="popup-header">
+              <h2>Ownership History</h2>
+              <button className="close-btn" onClick={() => setShowHistory(false)}>X</button>
+            </div>
+            <div className="history-list">
+            {history[selectedTicket.ticketId]?.owners.length > 0 ? (
+          history[selectedTicket.ticketId].owners.map((owner, index) => (
+            <p className="showOwners" key={index}>
+              <strong>Previous Owner:</strong> {owner} <br />
+              <strong>Price Bought:</strong> {history[selectedTicket.ticketId].prices[index]} ETH
+            </p>
+          ))
+        ) : (
+          <p>No previous owners found</p>
+        )}
+            </div>
+          </div>
+        </div>
+      )}
+
   </div>
 );
 };

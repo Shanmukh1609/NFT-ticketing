@@ -94,6 +94,7 @@ const AddEvent = () => {
           }
         })
         console.log(upload.data.IpfsHash);
+        return upload.data.IpfsHash;
       } catch (error) {
         console.error("Error uploading file to Pinata:", error);
         return null;
@@ -102,8 +103,9 @@ const AddEvent = () => {
 
     try {
       const URI = await uploadToPinata(img);
+      console.log(URI);
       setURI(URI);
-      const tx = await nft.newEvent(acc, eventName, uri, eventDescription, venue, ticketPrice, totalTickets, priceCap);
+      const tx = await nft.newEvent(acc, eventName, URI, eventDescription, venue, ticketPrice, totalTickets, priceCap);
       await tx.wait();
       toast.success("Successfully added the Event");
       console.log("Added");
