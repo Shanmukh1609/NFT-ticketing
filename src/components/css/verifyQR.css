@@ -1,0 +1,88 @@
+/* General layout */
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+
+body {
+    font-family:  Rubik,sans-serif;
+    background: linear-gradient(to right, #1e2a5a, #8a77d6);
+    color: black;
+    margin: 0;
+    padding: 0;
+  }
+
+.verify-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    /* background-color: #f9fafb; */
+    padding: 2rem;
+  }
+  
+  /* Card */
+  .verify-card {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 20rem;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Heading */
+  .verify-heading {
+    font-size: 1.75rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1rem;
+    color: black; /* Tailwind's blue-600 */
+  }
+  
+  /* Status badge */
+  .status-badge {
+    text-align: center;
+    color: white;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  
+  .status-success {
+    background-color: #22c55e; /* Tailwind's green-500 */
+  }
+  
+  .status-failure {
+    background-color: #ef4444; /* Tailwind's red-500 */
+  }
+  
+  .status-neutral {
+    background-color: #9ca3af; /* Tailwind's gray-400 */
+  }
+  
+  /* Info box */
+  .event-info {
+    background-color: #f3f4f6;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+  }
+  
+  .event-info p {
+    margin: 0.25rem 0;
+    font-size: 1rem;
+    color: #374151;
+  }
+  
+  .event-info .label {
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  /* Loading message */
+  .loading-message {
+    color: #6b7280;
+    text-align: center;
+  }
+  

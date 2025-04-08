@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ethers } from "ethers";
 import toast, { Toaster } from "react-hot-toast";
 import "./css/user.css";
 import config from "../config.json";
 import NFTminting from "../abis/NFTminting.json";
+// import QRCode from "qrcode.react";
+import html2canvas from "html2canvas";
+import CryptoJS from "crypto-js";
+import QRCode from "qrcode";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
@@ -18,6 +22,8 @@ const UserDashboard = () => {
   const [selectedEventId, setSelectedEventId] = useState(null);
   const [selectedTicketId, setSelectedTicketId] = useState(null);
   const [resalePrice, setResalePrice] = useState("");
+  const qrRef = useRef(null);
+
 
   useEffect(() => {
     const loadContract = async () => {
@@ -113,6 +119,40 @@ const UserDashboard = () => {
     setResalePrice("");
   };
 
+  const SECRET_KEY = "NFT-Ticketing-By-IIIT_Dharwad";
+
+  const generateQRData = (ticket,eventid) => {
+    const rawData = JSON.stringify({
+      wallet: acc,
+      tokenId: ticket.ticketId.toString(),
+      eventNum: eventid.toString(),
+      seatNum: ticket.seatNum.toString(),
+    });
+  
+    const encrypted = CryptoJS.AES.encrypt(rawData, SECRET_KEY).toString();
+    const encoded = encodeURIComponent(encrypted);
+  
+    return `http://localhost:3000/verifyQR?data=${encoded}`;
+  };
+
+  const downloadAllQRCodes = async (event) => {
+    for (const ticket of event.tickets) {
+      const qrData = generateQRData(ticket, event.eventId);
+  
+      try {
+        const dataUrl = await QRCode.toDataURL(qrData, { width: 256 });
+  
+        const link = document.createElement("a");
+        link.href = dataUrl;
+        link.download = `ticket_${ticket.ticketId}.png`;
+        link.click();
+      } catch (err) {
+        console.error("QR Generation Error:", err);
+      }
+    }
+  };
+  
+
   return (
     <div className="dashboard-container">
       <h1 className="dashboard-title">USER DASHBOARD</h1>
@@ -129,6 +169,9 @@ const UserDashboard = () => {
                 <p>{event.priceCap}</p>
                 <button className="resell-btn" onClick={() => openResaleModal(event.eventId)}>
                   Resell Ticket
+                </button>
+                <button className="generate-qr-btn" onClick={() => downloadAllQRCodes(event)}   >
+                 generate QR 
                 </button>
               </div>
             </div>

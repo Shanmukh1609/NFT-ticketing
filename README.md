@@ -15,11 +15,11 @@ npm install
 ```
 Compile the Smart Contracts
 ```shell
-npm hardhat compile
+npx hardhat compile
 ```
 Run the local Hardhat network
 ```shell
-npm hardhat node
+npx hardhat node
 ```
 
 Deploy the smart contract

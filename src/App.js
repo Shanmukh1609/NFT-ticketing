@@ -4,7 +4,7 @@ import OrgDashboard from "./components/orgDashboard";
 import NFTEvents from "./components/events";
 import UserDashboard from "./components/users";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
+import VerifyQR from "./components/verifyQR"
 // ABIs
 import NFTminting from "./abis/NFTminting.json";
 import config from "./config.json";
@@ -65,6 +65,7 @@ const App = () => {
           <Route path="/organiser" element={<OrgDashboard nft={nft} />} />
           <Route path="/addEvent" element={<AddEvent nft={nft} />} />
           <Route path="/user" element={<UserDashboard nft={nft} />} />
+          <Route path="/verifyQR" element={<VerifyQR nft={nft} />} />
         </Routes>
       </div>
     </Router>
