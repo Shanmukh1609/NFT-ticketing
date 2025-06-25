@@ -26,3 +26,8 @@ Deploy the smart contract
 ```shell
 npx hardhat run ./deploy/deploy.js --network localhost
 ```
+
+Start the frontend
+```shell
+npm start
+```
